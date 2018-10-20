@@ -5,6 +5,7 @@
 
 import React, {Component} from 'react';
 import {AppRegistry, Text, View, ListView, TouchableHighlight, Switch, StyleSheet} from 'react-native';
+import MapView from 'react-native-maps';
 
 const fetchPath = 'http://mappy.dali.dartmouth.edu/members.json';
 
@@ -60,12 +61,24 @@ export default class Members extends Component<Props> {
 	render() {
 		return (
 			<View style={styles.container}>
-				<Switch 
-					onValueChange={(value) => this.setState({
-						switchFlag: value
-					})}
-					value={this.state.switchFlag}
+				<MapView
+				    style={styles.map} 
+					initialRegion={{
+					    latitude: 37.78825,
+					    longitude: -122.4324,
+					    latitudeDelta: 0.0922,
+					    longitudeDelta: 0.0421,
+					}}
 				/>
+				<View style={styles.switchView}>
+					<Switch 
+						style={styles.switchBtn}
+						onValueChange={(value) => this.setState({
+							switchFlag: value
+						})}
+						value={this.state.switchFlag}
+					/>
+				</View>
 				<ListView 
 				style = {styles.list}
 				dataSource={this.state.memberDataSource}
@@ -78,14 +91,30 @@ export default class Members extends Component<Props> {
 
 const styles = StyleSheet.create ({
 	container: {
-		marginTop: 50
+		marginTop: 50,
+		flex: 1,
+		flexDirection: 'row',
+		justifyContent: 'flex-end'
+	},
+	mapContainer: {
+		height: 500,
+		width: '100%'
+	},
+	map: {
+		height: 500,
+		width: '100%'
+	},
+	switchView: {
+		flexDirection: 'column',
+		position: 'absolute',
+		alignItems: 'flex-end'
 	},
 	switchBtn: {
-		marginTop: 50
 	},
 	row: {
 		flexDirection: 'row',
 		justifyContent: 'center',
+		width: '100%',
 		padding: 10,
 		backgroundColor: '#f4f4f4',
 		marginBottom: 3
