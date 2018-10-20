@@ -4,7 +4,7 @@
  */
 
 import React, {Component} from 'react';
-import {AppRegistry, Text, View, ListView, TouchableHighlight, StyleSheet} from 'react-native';
+import {AppRegistry, Text, View, ListView, TouchableHighlight, Switch, StyleSheet} from 'react-native';
 
 const fetchPath = 'http://mappy.dali.dartmouth.edu/members.json';
 
@@ -18,7 +18,8 @@ export default class Members extends Component<Props> {
 		const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 		this.state = {
 			memberDataSource: ds,
-			currentData: null
+			currentData: null,
+			switchFlag: false
 		};
 	}
 
@@ -27,7 +28,10 @@ export default class Members extends Component<Props> {
 	}
 
 	onPress(user) {
-		this.props.navigation.navigate('MemberDetail', {user});
+		this.props.navigation.navigate('MemberDetail', {
+			subject: user, 
+			switchFlag: this.state.switchFlag
+		});
 	}
 
 	fetchJson() {
@@ -55,17 +59,28 @@ export default class Members extends Component<Props> {
 
 	render() {
 		return (
-			<ListView 
-			style = {styles.list}
-			dataSource={this.state.memberDataSource}
-			renderRow={this.renderRow.bind(this)}
-			/>
+			<View style={styles.container}>
+				<Switch 
+					onValueChange={(value) => this.setState({
+						switchFlag: value
+					})}
+					value={this.state.switchFlag}
+				/>
+				<ListView 
+				style = {styles.list}
+				dataSource={this.state.memberDataSource}
+				renderRow={this.renderRow.bind(this)}
+				/>
+			</View>
 		);
 	}
 }
 
 const styles = StyleSheet.create ({
-	list: {
+	container: {
+		marginTop: 50
+	},
+	switchBtn: {
 		marginTop: 50
 	},
 	row: {
@@ -75,7 +90,7 @@ const styles = StyleSheet.create ({
 		backgroundColor: '#f4f4f4',
 		marginBottom: 3
 	},
-		rowText: {
+	rowText: {
 		flex: 1
-		}
+	}
 });

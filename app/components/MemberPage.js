@@ -1,6 +1,6 @@
 /**
  * Component to render details about a member
- * Props: navigation
+ * Props: navigation, subject, switchFlag
  */
 
 import React, {Component} from 'react';
@@ -10,8 +10,10 @@ export default class MemberPage extends Component<Props> {
 	constructor(props) {
 		super(props);
 		const {params} = this.props.navigation.state;
-		const user = params ? params.user : null;
+		const user = params ? params.subject : null;
+		const switchFlag = params ? params.switchFlag : null;
 		this.state = {
+			switchFlag: switchFlag,
 			name: user.name,
 			iconUrl: user.iconUrl,
 			message: user.message,
@@ -21,18 +23,35 @@ export default class MemberPage extends Component<Props> {
 		}
     }
 
-  render() {
+    renderDetails() {
+    	const sFlag = this.state.switchFlag;
+    	const details = [
+    		<Text key={"details1"}>{this.state.name}</Text>,
+			<Text key={"details2"}>{this.state.lat}</Text>,
+			<Text key={"details3"}>{this.state.long}</Text>
+    	];
+    	if (sFlag === true) {
+    		details.push(<Text key={"details4"}>{this.state.iconUrl}</Text>);
+    	}
 
-	return (
-		<View>
-			<Text>{this.state.name}</Text>
-			<Text>{this.state.lat}</Text>
-			<Text>{this.state.long}</Text>
-			<Button title="Go Back to Map"
-					onPress={() => this.props.navigation.goBack()}
-			/>
-		</View>
-	);
-  }
+    	return (details);
+    }
 
+  	render() {
+
+		return (
+			<View style={styles.memberView}>
+				{this.renderDetails()}
+				<Button title="Go Back to Map"
+						onPress={() => this.props.navigation.goBack()}
+				/>
+			</View>
+		);
+    }
 }
+
+const styles = StyleSheet.create ({
+	memberView: {
+		flex: 1
+	}
+});
