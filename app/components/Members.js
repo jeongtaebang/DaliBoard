@@ -22,46 +22,50 @@ export default class Members extends Component<Props> {
 			currentData: null,
 			switchFlag: false
 		};
+
+		/* bound functions */
+		this.onMarkerPress = this.onMarkerPress.bind(this);
 	}
 
 	componentDidMount() {
 		this.fetchJson();
 	}
 
-
 	fetchJson() {
 		fetch(fetchPath)
 			.then((response) => response.json())
 			.then((parsedRes) => {
 				const membersArray = [];
-				for (const member in parsedRes) {
+				parsedRes.map((member, index) => {
 					membersArray.push({
-						name: parsedRes["name"],
-						iconUrl: parsedRes["iconUrl"],
-						url: parsedRes["url"],
-						message: parsedRes["messaeg"],
-						coordinate: parsedRes["lat_long"],
-						terms_on: parsedRes["terms_on"],
-						project: parsedRes["project"],
-						id: parsedRes["name"]	
+						name: member.name,
+						iconUrl: member.iconUrl,
+						url: member.url,
+						message: member.message,
+						coordinate: member.lat_long,
+						terms_on: member.terms_on,
+						project: member.project,
+						id: index	
 					});
-				}
+				})
 				this.setState({
 				  	memberDataSource: membersArray
-				})
+				});
 		 	})
 		 	.catch(err => console.log(err));
 	}
 
-	onPress(user) {
+	onMarkerPress(member) {
+		console.log(member);
 		this.props.navigation.navigate('MemberDetail', {
-			subject: user, 
+			subject: member, 
 			switchFlag: this.state.switchFlag
 		});
 	}
+
 	renderRow(rowData, sectionID, rowID, highlightRow) {
 		return(
-			<TouchableHighlight onPress={() => {this.onPress(rowData)}}>
+			<TouchableHighlight>
 				<View style={styles.row}>
 					<Text style={styles.rowText}>{rowData.name}</Text>
 					<Text style={styles.rowText}>{rowData.message}</Text>
@@ -75,7 +79,10 @@ export default class Members extends Component<Props> {
 	render() {
 		return (
 			<View style={styles.container}>
-				<DaliMap members={this.state.memberDataSource}/>
+				<DaliMap 
+					members={this.state.memberDataSource}
+					onMarkerPress={this.onMarkerPress}
+				/>
 				<Switch 
 					style={styles.switchBtn}
 					onValueChange={(value) => this.setState({

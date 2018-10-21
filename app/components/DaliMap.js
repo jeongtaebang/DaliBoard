@@ -1,6 +1,6 @@
 /**
  * Component to render a mpa
- * Props: members, 
+ * Props: members, onMarkerPress
  */
 
 import React, {Component} from 'react';
@@ -17,36 +17,29 @@ export default class Members extends Component<Props> {
 			region: {
 				latitude: 30.78825,
 				longitude: -100.4324,
-				latitudeDelta: 10,
-				longitudeDelta: 11,
+				latitudeDelta: 50,
+				longitudeDelta: 55,
 			}
 		};
 	}
 
 	render() {
-		const memberMarkers = Array(50).map(x => 
+		const memberMarkers = this.props.members.map(member => 
 			<MapView.Marker 
-				coordinate={{
-					latitude: 30.78825,
-					longitude: -100.4324
-				}} 
-				key={x}
+				coordinate={{latitude: member.coordinate[0], longitude: member.coordinate[1]}} 
+				key={member.id}
+				onPress={() => this.props.onMarkerPress(member)}
 			/>
 		);
 		return(
 			<MapView
 				provider={"google"}
 			    style={styles.map}
-			    /*customMapStyle={NightViewMapStyle}*/
+			    customMapStyle={NightViewMapStyle}
 				initialRegion={this.state.region}
 				onRegionChange={(region) => this.setState({region})}
 				onRegionChangeComplete={(region) => this.setState({region})} >
-				<MapView.Marker 
-				coordinate={{
-					latitude: 30.78825,
-					longitude: -100.4324
-				}} 
-			/>
+				{memberMarkers}
 			</MapView>
 			);
 	}

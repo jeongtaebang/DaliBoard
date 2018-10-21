@@ -16,7 +16,6 @@ import MemberPage from './app/components/MemberPage';
 const AppStackNavigator = createStackNavigator({
     Map: Members,
     MemberDetail: MemberPage
-
 });
 
 export default class App extends Component<Props> {  
