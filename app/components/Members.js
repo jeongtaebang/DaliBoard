@@ -6,6 +6,8 @@
 import React, {Component} from 'react';
 import {AppRegistry, Text, View, ListView, TouchableHighlight, Switch, StyleSheet} from 'react-native';
 
+import DaliMap from './DaliMap'
+
 const fetchPath = 'http://mappy.dali.dartmouth.edu/members.json';
 
 export default class Members extends Component<Props> {
@@ -60,16 +62,14 @@ export default class Members extends Component<Props> {
 	render() {
 		return (
 			<View style={styles.container}>
+				<DaliMap />
 				<Switch 
+					style={styles.switchBtn}
 					onValueChange={(value) => this.setState({
 						switchFlag: value
 					})}
 					value={this.state.switchFlag}
-				/>
-				<ListView 
-				style = {styles.list}
-				dataSource={this.state.memberDataSource}
-				renderRow={this.renderRow.bind(this)}
+					ios_backgroundColor={'#ffffcc'}
 				/>
 			</View>
 		);
@@ -78,14 +78,18 @@ export default class Members extends Component<Props> {
 
 const styles = StyleSheet.create ({
 	container: {
-		marginTop: 50
+		marginTop: 35,
+		flex: 1,
+		flexDirection: 'row',
+		justifyContent: 'flex-end'
 	},
 	switchBtn: {
-		marginTop: 50
+		position: 'absolute'
 	},
 	row: {
 		flexDirection: 'row',
 		justifyContent: 'center',
+		width: '100%',
 		padding: 10,
 		backgroundColor: '#f4f4f4',
 		marginBottom: 3
