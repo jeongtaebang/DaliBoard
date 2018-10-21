@@ -4,7 +4,7 @@
  */
 
 import React, {Component} from 'react';
-import {AppRegistry, Text, View, ListView, TouchableHighlight, Switch, StyleSheet} from 'react-native';
+import {AppRegistry, Text, View, TouchableHighlight, Switch, StyleSheet} from 'react-native';
 
 import DaliMap from './DaliMap'
 
@@ -17,9 +17,8 @@ export default class Members extends Component<Props> {
 
 	constructor(props) {
 		super(props);
-		const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 		this.state = {
-			memberDataSource: ds,
+			memberDataSource: [],
 			currentData: null,
 			switchFlag: false
 		};
@@ -29,23 +28,37 @@ export default class Members extends Component<Props> {
 		this.fetchJson();
 	}
 
+
+	fetchJson() {
+		fetch(fetchPath)
+			.then((response) => response.json())
+			.then((parsedRes) => {
+				const membersArray = [];
+				for (const member in parsedRes) {
+					membersArray.push({
+						name: parsedRes["name"],
+						iconUrl: parsedRes["iconUrl"],
+						url: parsedRes["url"],
+						message: parsedRes["messaeg"],
+						coordinate: parsedRes["lat_long"],
+						terms_on: parsedRes["terms_on"],
+						project: parsedRes["project"],
+						id: parsedRes["name"]	
+					});
+				}
+				this.setState({
+				  	memberDataSource: membersArray
+				})
+		 	})
+		 	.catch(err => console.log(err));
+	}
+
 	onPress(user) {
 		this.props.navigation.navigate('MemberDetail', {
 			subject: user, 
 			switchFlag: this.state.switchFlag
 		});
 	}
-
-	fetchJson() {
-		fetch(fetchPath)
-		  .then((response) => response.json())
-		  .then((response) => {
-			this.setState({
-			  	memberDataSource: this.state.memberDataSource.cloneWithRows(response)
-			})
-		  });
-	}
-
 	renderRow(rowData, sectionID, rowID, highlightRow) {
 		return(
 			<TouchableHighlight onPress={() => {this.onPress(rowData)}}>
@@ -62,7 +75,7 @@ export default class Members extends Component<Props> {
 	render() {
 		return (
 			<View style={styles.container}>
-				<DaliMap />
+				<DaliMap members={this.state.memberDataSource}/>
 				<Switch 
 					style={styles.switchBtn}
 					onValueChange={(value) => this.setState({
