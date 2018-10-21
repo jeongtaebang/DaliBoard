@@ -4,7 +4,9 @@
  */
 
 import React, {Component} from 'react';
-import {AppRegistry, Text, View, TouchableHighlight, Switch, StyleSheet} from 'react-native';
+import {AppRegistry, Text, TextInput, View, TouchableHighlight, Switch, StyleSheet} from 'react-native';
+import Callout from 'react-native-maps';
+
 
 import DaliMap from './DaliMap'
 
@@ -83,6 +85,11 @@ export default class Members extends Component<Props> {
 					members={this.state.memberDataSource}
 					onMarkerPress={this.onMarkerPress}
 				/>
+					<View style={styles.calloutView} >
+					    <TextInput style={styles.calloutSearch}
+					    	placeholder={"Search DALI member's name"}
+					    />
+					</View>
 				<Switch 
 					style={styles.switchBtn}
 					onValueChange={(value) => this.setState({
@@ -100,10 +107,10 @@ const styles = StyleSheet.create ({
 	container: {
 		marginTop: 35,
 		flex: 1,
-		flexDirection: 'row',
-		justifyContent: 'flex-end'
+		backgroundColor: '#F5FCFF',
 	},
 	switchBtn: {
+		alignSelf: 'flex-end',
 		position: 'absolute'
 	},
 	row: {
@@ -116,5 +123,26 @@ const styles = StyleSheet.create ({
 	},
 	rowText: {
 		flex: 1
+	},
+	calloutView: {
+		position: 'absolute',
+		bottom: 0,
+		left: 5,
+		right: 5,
+		backgroundColor: "rgba(0,0,0,0)",
+		borderRadius: 10,
+		marginBottom: 15
+	},
+	calloutSearch: {
+		height: 36,
+            padding: 10,
+            marginTop: 20,
+            marginLeft: 10,
+            marginRight: 10,
+            fontSize: 18,
+            borderWidth: 1,
+            borderRadius: 10,
+            borderColor: '#48BBEC',
+            backgroundColor: 'white'
 	}
 });

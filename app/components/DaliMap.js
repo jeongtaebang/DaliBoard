@@ -47,7 +47,6 @@ export default class Members extends Component<Props> {
 
 const styles = StyleSheet.create ({
 	map: {
-		height: '100%',
-		width: '100%'
+		flex: 1
 	},
 });
