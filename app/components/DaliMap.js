@@ -15,10 +15,10 @@ export default class Members extends Component<Props> {
 		super(props);
 		this.state = {
 			region: {
-				latitude: 30.78825,
-				longitude: -100.4324,
-				latitudeDelta: 50,
-				longitudeDelta: 55,
+				latitude: 37.78825,
+      			longitude: -101.4324,
+				latitudeDelta: 55,
+				longitudeDelta: 58,
 			}
 		};
 	}
@@ -31,6 +31,7 @@ export default class Members extends Component<Props> {
 				onPress={() => this.props.onMarkerPress(member)}
 			/>
 		);
+
 		return(
 			<MapView
 				provider={"google"}

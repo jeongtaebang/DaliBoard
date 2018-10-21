@@ -21,7 +21,8 @@ export default class Members extends Component<Props> {
 		super(props);
 		this.state = {
 			memberDataSource: [],
-			currentData: null,
+			currentData: [],
+			searchText: "",
 			switchFlag: false
 		};
 
@@ -51,7 +52,8 @@ export default class Members extends Component<Props> {
 					});
 				})
 				this.setState({
-				  	memberDataSource: membersArray
+				  	memberDataSource: membersArray,
+				  	currData: membersArray
 				});
 		 	})
 		 	.catch(err => console.log(err));
@@ -78,15 +80,28 @@ export default class Members extends Component<Props> {
 		);
 	}
 
+	setSearchText(event) {
+		this.setState({
+			searchText: event.nativeEvent.text
+		});
+	}
+
 	render() {
+		let newCurrData = this.state.memberDataSource.filter( (member) => {
+			return member.name.indexOf(this.state.searchText) !== -1;
+		});
+
 		return (
 			<View style={styles.container}>
 				<DaliMap 
-					members={this.state.memberDataSource}
+					members={newCurrData}
 					onMarkerPress={this.onMarkerPress}
 				/>
 					<View style={styles.calloutView} >
-					    <TextInput style={styles.calloutSearch}
+					    <TextInput 
+					    	style={styles.calloutSearch}
+					    	value={this.state.searchText}
+					    	onChange={(this.setSearchText.bind(this))}
 					    	placeholder={"Search DALI member's name"}
 					    />
 					</View>
