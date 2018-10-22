@@ -9,6 +9,10 @@ There were a lot of resources to learn from, but setting up was definitely the t
 
 ## Instructions for Build
 1) Open `DaliBoard.xcworkspace` with `XCode` and build.  
+* go to `XCode` workspace settings  
+* click advanced  
+* set `Path relative to Workspace`  
+* change all fields with `Build/Products` to `build/Build/Products`  
 
 
 2) Install `react-native` and `react-native-cli`  
