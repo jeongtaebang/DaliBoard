@@ -1,6 +1,7 @@
 /**
- * Component to render a mpa
- * Props: members, onMarkerPress
+ * Component to render a map and passed markers
+ *
+ * Props: members, onMarkerPress(bound function)
  */
 
 import React, {Component} from 'react';
@@ -46,6 +47,7 @@ export default class Members extends Component<Props> {
 	}
 }
 
+/* Styles */
 const styles = StyleSheet.create ({
 	map: {
 		flex: 1

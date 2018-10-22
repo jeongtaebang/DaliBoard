@@ -1,12 +1,12 @@
 /**
- * Component to fetch json object from a pre-set path
+ * Component to fetch json object from a pre-set path and store as array of markers
+ * Display a map and pass markers depending on switch and search field values
+ *
  * Props: navigation
  */
 
 import React, {Component} from 'react';
 import {AppRegistry, Text, TextInput, View, TouchableHighlight, Switch, StyleSheet} from 'react-native';
-import Callout from 'react-native-maps';
-
 
 import DaliMap from './DaliMap'
 
@@ -14,6 +14,7 @@ const fetchPath = 'http://mappy.dali.dartmouth.edu/members.json';
 
 export default class Members extends Component<Props> {
 	static navigationOptions = {
+		/* no navigator for this screen */
 		header: null
   	}
 
@@ -30,10 +31,12 @@ export default class Members extends Component<Props> {
 		this.onMarkerPress = this.onMarkerPress.bind(this);
 	}
 
+	/* LifeCycle methods */
 	componentDidMount() {
 		this.fetchJson();
 	}
 
+	/* Fetch json from DALI and set as data source */
 	fetchJson() {
 		fetch(fetchPath)
 			.then((response) => response.json())
@@ -59,27 +62,15 @@ export default class Members extends Component<Props> {
 		 	.catch(err => console.log(err));
 	}
 
+	/* On marker press, navigate to a page displaying details of the member */
 	onMarkerPress(member) {
-		console.log(member);
 		this.props.navigation.navigate('MemberDetail', {
 			subject: member, 
 			switchFlag: this.state.switchFlag
 		});
 	}
 
-	renderRow(rowData, sectionID, rowID, highlightRow) {
-		return(
-			<TouchableHighlight>
-				<View style={styles.row}>
-					<Text style={styles.rowText}>{rowData.name}</Text>
-					<Text style={styles.rowText}>{rowData.message}</Text>
-					<Text style={styles.rowText}>{rowData.lat_long[0]}</Text>
-					<Text style={styles.rowText}>{rowData.project[0]}</Text>
-				</View>
-			</TouchableHighlight>
-		);
-	}
-
+	/* respond to input change and filter the current members array accordingly */
 	setSearchText(event) {
 		this.setState({
 			searchText: event.nativeEvent.text
@@ -87,6 +78,7 @@ export default class Members extends Component<Props> {
 	}
 
 	render() {
+		/* upon re-render, filter previous state to update it based on new searchText */
 		let newCurrData = this.state.memberDataSource.filter( (member) => {
 			return member.name.indexOf(this.state.searchText) !== -1;
 		});
@@ -118,6 +110,7 @@ export default class Members extends Component<Props> {
 	}
 }
 
+/* Styles */
 const styles = StyleSheet.create ({
 	container: {
 		marginTop: 35,

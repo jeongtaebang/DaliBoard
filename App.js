@@ -1,9 +1,10 @@
 /**
- * DALI DEV Challenge II : First Attempt at React-Native
+ * DALI DEV Challenge II : My first React-Native project
  * Jeong Tae Bang
  * 
- * @format
- * @flow
+ * Look at app/components/* for most custom components
+ *
+ * Screens: Map (initial), MemberDetail
  */
 
 import React, {Component} from 'react';

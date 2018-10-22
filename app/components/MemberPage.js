@@ -1,5 +1,10 @@
 /**
  * Component to render details about a member
+ * switch Off (default): photo, name, message 
+ * switch On           : (above) + coordinates, project, terms on
+ *
+ * You may navigate back to map screen from here
+ *
  * Props: navigation, subject, switchFlag
  */
 
@@ -12,6 +17,7 @@ export default class MemberPage extends Component<Props> {
 		const {params} = this.props.navigation.state;
 		const member = params ? params.subject : null;
 		const switchFlag = params ? params.switchFlag : null;
+		
 		this.state = {
 			switchFlag: switchFlag,
 			name: member.name,
@@ -27,6 +33,7 @@ export default class MemberPage extends Component<Props> {
     renderDetails() {
     	const sFlag = this.state.switchFlag;
     	var baseUrl = "http://mappy.dali.dartmouth.edu/";
+    	/* basic information */
     	const details = [
     		<Image
     			key={"details1"}
@@ -39,6 +46,7 @@ export default class MemberPage extends Component<Props> {
     			{this.state.name}: {this.state.message}
     		</Text>
     	];
+    	/* Provide additional details if switch On */
     	if (sFlag === true) {
     		details.push(<Text 
     						key={"details3"}
@@ -46,11 +54,14 @@ export default class MemberPage extends Component<Props> {
     						Lat: {this.state.coordinate[0]} {"\n"}
     						Long: {this.state.coordinate[1]}
     					 </Text>);
+
     		details.push(<Text 
     						key={"details4"}
     						style={styles.memberText}>
     						Terms on: {this.state.terms_on.join(" ")}
     					 </Text>);
+
+    		/* Project may be blank */
     		if (this.state.project && this.state.project.length > 0) {
     			details.push(<Text 
     							key={"details5"}
@@ -80,6 +91,7 @@ export default class MemberPage extends Component<Props> {
     }
 }
 
+/* Styles */
 const styles = StyleSheet.create ({
 	imageView: {
 		width: 200,
