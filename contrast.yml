@@ -2,6 +2,9 @@ package_files:
   npm:
   - ./package-lock.json
   - ./package.json
+  pypi:
+  - ./fake_path.txt
+  - ./fake_pipfile.lock
   gradle:
   - ./android/build.gradle
   - ./android/app/build.gradle
